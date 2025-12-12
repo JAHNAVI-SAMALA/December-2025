@@ -1,0 +1,32 @@
+class Solution:
+    def countMentions(self, numberOfUsers: int, events: List[List[str]]) -> List[int]:
+        ans = [0] * numberOfUsers
+        online = [True] * numberOfUsers
+        online_until = [0] * numberOfUsers
+        proc = []
+        for e in events:
+            t = int(e[1])
+            order = 0 if e[0] == "OFFLINE" else 1
+            proc.append((t, order, e[0], e[2]))
+        proc.sort()
+        for t, _, typ, data in proc:
+            for u in range(numberOfUsers):
+                if not online[u] and online_until[u] <= t:
+                    online[u] = True
+            if typ == "OFFLINE":
+                u = int(data)
+                online[u] = False
+                online_until[u] = t + 60
+            else:
+                if data == "ALL":
+                    for u in range(numberOfUsers):
+                        ans[u] += 1
+                elif data == "HERE":
+                    for u in range(numberOfUsers):
+                        if online[u]:
+                            ans[u] += 1
+                else:
+                    for token in data.split():
+                        u = int(token[2:])
+                        ans[u] += 1
+        return ans
