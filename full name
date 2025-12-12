@@ -1,0 +1,4 @@
+def print_full_name(first, last):
+    # Write your code here
+    name = first +" "+ last
+    print(f"Hello {name}! You just delved into python.")
