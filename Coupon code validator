@@ -1,0 +1,24 @@
+class Solution:
+    def validateCoupons(self, code: List[str], businessLine: List[str], isActive: List[bool]) -> List[str]:
+        valid = []
+        allowed = {"electronics","grocery","pharmacy","restaurant"}
+        for i in range(len(code)):
+            if isActive[i] is False:
+                continue
+            if businessLine[i] not in allowed:
+                continue
+            if code[i]== "":
+                continue
+            valid_code = True
+            for c in code[i]:
+                if c.isalnum() or c == '_':
+                    continue
+                else:
+                    valid_code =False
+                    break
+            if not valid_code:
+                continue
+            valid.append((businessLine[i],code[i]))
+        priority = {"electronics":0,"grocery":1,"pharmacy":2,"restaurant":3}
+        valid.sort(key = lambda x:(priority[x[0]],x[1]))
+        return [code for _,code in valid]
