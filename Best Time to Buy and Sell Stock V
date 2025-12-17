@@ -1,0 +1,22 @@
+class Solution:
+    def maximumProfit(self, prices: List[int], k: int) -> int:
+        if not prices or  k == 0:
+            return 0
+        neg = float('-inf')
+        dp = [[neg,neg,neg] for _ in range(k + 1)]
+        dp[0][0] = 0
+        for price in prices:
+            ndp = [[neg,neg,neg] for _ in range(k+1)]
+            for t in range(k+1):
+                ndp[t][0] = max(ndp[t][0],dp[t][0])
+                if dp[t][1] != neg:
+                    ndp[t][0] = max(ndp[t][0],dp[t][1] + price)
+                if dp[t][2] != neg:
+                    ndp[t][0] = max(ndp[t][0],dp[t][2] - price)
+                if t < k:
+                    ndp[t+1][1] = max(ndp[t+1][1],dp[t][0] - price)
+                    ndp[t+1][2] = max(ndp[t+1][2],dp[t][0] + price)
+                ndp[t][1] = max(ndp[t][1],dp[t][1])
+                ndp[t][2] = max(ndp[t][2],dp[t][2])
+            dp = ndp
+        return max(dp[t][0] for t in range(k+1))
