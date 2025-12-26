@@ -1,0 +1,11 @@
+class Solution:
+    def bestClosingTime(self, customers: str) -> int:
+        ans = 0
+        profit = 0
+        max_profit = 0
+        for i,c in enumerate(customers):
+            profit += 1 if c == 'Y' else -1
+            if profit > max_profit:
+                max_profit = profit
+                ans = i+ 1
+        return ans
