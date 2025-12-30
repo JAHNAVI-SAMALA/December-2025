@@ -1,0 +1,29 @@
+class Solution:
+    def numMagicSquaresInside(self, grid):
+        m, n = len(grid), len(grid[0])
+        ans = 0
+
+        for i in range(m - 2):
+            for j in range(n - 2):
+                if self.isMagic(grid, i, j):
+                    ans += 1
+        return ans
+
+    def isMagic(self, g, r, c):
+        if g[r+1][c+1] != 5:
+            return False
+
+        nums = [g[i][j] for i in range(r, r+3) for j in range(c, c+3)]
+        if sorted(nums) != list(range(1, 10)):
+            return False
+
+        return (
+            g[r][c] + g[r][c+1] + g[r][c+2] == 15 and
+            g[r+1][c] + g[r+1][c+1] + g[r+1][c+2] == 15 and
+            g[r+2][c] + g[r+2][c+1] + g[r+2][c+2] == 15 and
+            g[r][c] + g[r+1][c] + g[r+2][c] == 15 and
+            g[r][c+1] + g[r+1][c+1] + g[r+2][c+1] == 15 and
+            g[r][c+2] + g[r+1][c+2] + g[r+2][c+2] == 15 and
+            g[r][c] + g[r+1][c+1] + g[r+2][c+2] == 15 and
+            g[r][c+2] + g[r+1][c+1] + g[r+2][c] == 15
+        )
